@@ -23,24 +23,28 @@ En la primera línea, se debe imprimir la máxima cantidad de planes de expansi�
 
 Si no es posible aplicar ningún plan de expansión, imprimir 0.
 
-| Input:   |
-|:---------|
-|    2 1 1 |
-|    2 2   |
-|    2 2   |
-|Output:   |
-|:---------|
-|    1     |
-|    1     |
+|Input:|
+|:-----|
+|2 1 1|
+|2 2|
+|2 2|
 
 
-| Input:   |
-|:---------|
-|    3 3 3 |
-|    5 4   |
-|    12 11 |
-|    9 8   |
-|Output:   |
-|:---------|
-|    3     |
-|    1 3 2 |
+|Output:|
+|:------|
+|1|
+|1|
+
+
+|Input:|
+|:-----|
+|3 3 3|
+|5 4|
+|12 11|
+|9 8|
+
+
+|Output:|
+|:------|
+|3|
+|1 3 2|
