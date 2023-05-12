@@ -24,14 +24,14 @@ public class Main{
         for(int i=0; i<n; i++){
             int newW = s.nextInt();
             int newL = s.nextInt();
-            P[i] = new Triple<Integer,Integer,Integer>(newW, newL, i);
+            P[i] = new Triple<Integer,Integer,Integer>(newW, newL, i+1);
         }
 
         Entry<Integer, List<Integer>> solucion = expandir(P, W, L);
 
         System.out.println(solucion.getKey());
         for(Integer i : solucion.getValue()){
-            System.out.print(i);
+            System.out.print(i + " ");
         }
     }
 
@@ -72,7 +72,7 @@ public class Main{
 
             @Override
             public int compare(Triple<Integer,Integer,Integer> arg0, Triple<Integer,Integer,Integer> arg1){
-                return arg0.getValue0() - arg1.getValue0();
+                return arg1.getValue0() - arg0.getValue0();
             }
         });
 
