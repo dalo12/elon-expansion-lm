@@ -90,7 +90,7 @@ public class Main{
         while (i < P.length){
             if(P[inicio].getValue0() != P[i].getValue0()){
                 fin = i-1;
-                Arrays.sort(P, inicio, fin);
+                Arrays.sort(P, inicio, fin, comparador_l);
                 inicio = i;
             }
             i++;
