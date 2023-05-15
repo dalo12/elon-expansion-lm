@@ -1,26 +1,36 @@
-def expandir_fabrica(W, L, planes):
-    cant_expansiones = 0
-    indices_expansion=[]
+from bisect import bisect_left
 
-    planes.sort()
-    
-    for wl, i in planes:
-        if wl[0] > W and wl[1] >L:
-            indices_expansion.append(i)
-            cant_expansiones+=1
-            W = wl[0]
-            L= wl[1]
+def patience_sort(arreglo):
+    pilas = []
+    for elemento in arreglo:
+        posicion = bisect_left(pilas, elemento)
+        if posicion == len(pilas):
+            pilas.append(elemento)
+        else:
+            pilas[posicion] = elemento
+    return pilas
 
-    print(cant_expansiones)
-    print(*indices_expansion)
+def expandir_fabrica(W,L,planes):
+    resultado = []
+    planes = patience_sort(planes)
+    for extension in planes:
+        if extension[0]> W and extension[1]>L:
+            resultado.append(extension[2])
+            W = extension[0]
+            L= extension[1]
+    return resultado
 
 n, W, L = map(int, input().split())
-planes = []
-
+expansiones = []
 for i in range(n):
     w, l = map(int, input().split())
-    planes.append(((w , l), i + 1))
+    if w>W and l>L:
+        expansiones.append((w, l, i+1))
+expansiones.sort()
 
-
-expandir_fabrica(W,L,planes)
-
+resultado = expandir_fabrica(W,L,expansiones)
+if(len(resultado) > 0):
+    print(len(resultado))
+    print(*resultado)
+else:
+    print(0) 
