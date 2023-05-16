@@ -12,7 +12,6 @@ public class Main{
         int n = 0;
         int W = 0;
         int L = 0;
-        int j = 0;
 
         List<Triple<Integer,Integer,Integer>> P = new ArrayList<Triple<Integer,Integer,Integer>>();
         Scanner s = new Scanner(System.in);
