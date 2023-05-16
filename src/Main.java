@@ -94,12 +94,11 @@ public class Main{
     /**
      * This code is contributed by Rajat Mishra. Adaptado para la solución
      * particular por la comisión López-Migliaro
-     * @param arr
-     * @param n
-     * @return
+     * @param arr Arreglo que contiene la lista de elementos
+     * @param n La cantidad de elementos del arreglo
+     * @return Una tupla cuya primer componente son la cantidad máxima de expansiones y la segunda
+     * componente es la lista de expansiones
      */
-
-    //protected static Entry<Integer, List<Integer>> lis(Triple<Integer,Integer,Integer>[] P, int W, int L)
     static Entry<Integer, List<Integer>> lis(Triple<Integer,Integer,Integer>[] arr, int n) {
         int lis[] = new int[n];
         List<Integer>[] soluciones = (ArrayList<Integer>[]) new ArrayList[n];
@@ -113,12 +112,18 @@ public class Main{
         soluciones[0].add(arr[0].getValue2());
         // Compute optimized LIS values in
         // bottom up manner
+        int insertar = -1;
         for (int i = 1; i < n; i++){
+            insertar = -1;
             for (int j = 0; j < i; j++) {
                 if (arr[i].getValue1() > arr[j].getValue1() && lis[i] < lis[j] + 1) {
                     lis[i] = lis[j] + 1;
-                    soluciones[i].add(arr[j].getValue2());
+                    insertar = j;
+                    //soluciones[i].add(arr[j].getValue2());
                 }
+            }
+            if(insertar >= 0) {
+                soluciones[i].addAll(soluciones[insertar]);
             }
             soluciones[i].add(arr[i].getValue2());
         }
