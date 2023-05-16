@@ -14,24 +14,24 @@ public class Main{
         int L = 0;
         int j = 0;
 
-        Triple<Integer,Integer,Integer>[] P;
+        List<Triple<Integer,Integer,Integer>> P = new ArrayList<Triple<Integer,Integer,Integer>>();
         Scanner s = new Scanner(System.in);
 
         n = s.nextInt();
         W = s.nextInt();
         L = s.nextInt();
 
-        P = (Triple<Integer,Integer,Integer>[]) new Triple[n];
-
         for(int i=0; i<n; i++){
             int newW = s.nextInt();
             int newL = s.nextInt();
             if(W < newW && L < newL) {
-                P[j++] = new Triple<Integer,Integer,Integer>(newW, newL, i + 1);
+                P.add(new Triple<Integer,Integer,Integer>(newW, newL, i + 1));
             }
         }
 
-        Entry<Integer, List<Integer>> solucion = expandir(P, j-1);
+        Triple<Integer,Integer,Integer>[] arregloP = new Triple[P.size()];
+        arregloP = P.toArray(arregloP);
+        Entry<Integer, List<Integer>> solucion = expandir(arregloP);
 
         System.out.println(solucion.getKey());
         for(Integer i : solucion.getValue()){
@@ -39,11 +39,11 @@ public class Main{
         }
     }
 
-    protected static Entry<Integer, List<Integer>> expandir(Triple<Integer,Integer,Integer>[] P, int cantElementos){
+    protected static Entry<Integer, List<Integer>> expandir(Triple<Integer,Integer,Integer>[] P){
 
-        if (cantElementos > 0){
-            Triple<Integer,Integer,Integer>[] pOrdenado = ordenar(P, cantElementos);
-            return lis(pOrdenado, cantElementos+1);
+        if (P.length > 0){
+            Triple<Integer,Integer,Integer>[] pOrdenado = ordenar(P);
+            return lis(pOrdenado, pOrdenado.length);
         }else{
             return new SimpleEntry<Integer, List<Integer>>(0, new ArrayList<Integer>());
         }
@@ -51,7 +51,7 @@ public class Main{
 
     }
 
-    protected static Triple<Integer,Integer,Integer>[] ordenar(Triple<Integer,Integer,Integer>[] P, int cantElementos){
+    protected static Triple<Integer,Integer,Integer>[] ordenar(Triple<Integer,Integer,Integer>[] P){
         Arrays.sort(P, new Comparator<Triple<Integer,Integer,Integer>>(){
 
             @Override
@@ -73,7 +73,7 @@ public class Main{
             }
         };
 
-        while (i <= cantElementos){
+        while (i < P.length){
             if(P[inicio].getValue0() != P[i].getValue0()){
                 Arrays.sort(P, inicio, i, comparador_l);
                 inicio = i;
@@ -81,8 +81,8 @@ public class Main{
             i++;
         }
 
-        if(P[inicio].getValue0() == P[cantElementos].getValue0()){
-            Arrays.sort(P, inicio, cantElementos+1, comparador_l);
+        if(P[inicio].getValue0() == P[P.length-1].getValue0()){
+            Arrays.sort(P, inicio, P.length, comparador_l);
         }
 
         // P ahora está ordenado de manera ascendente con respecto a w y
