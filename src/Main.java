@@ -42,7 +42,7 @@ public class Main{
 
         if (P.length > 0){
             Triple<Integer,Integer,Integer>[] pOrdenado = ordenar(P);
-            return lis(pOrdenado, pOrdenado.length);
+            return lis(pOrdenado);
         }else{
             return new SimpleEntry<Integer, List<Integer>>(0, new ArrayList<Integer>());
         }
@@ -90,6 +90,59 @@ public class Main{
         return P;
     }
 
+    /*
+     * Made by Venki
+     */
+    static Entry<Integer, List<Integer>> lis(Triple<Integer,Integer,Integer>[] v){
+        List<Integer> solucion = new ArrayList<Integer>();
+
+        if (v.length == 0) // boundary case
+            return new SimpleEntry<Integer,List<Integer>>(0, solucion);
+
+        Triple<Integer,Integer,Integer>[] tail = (Triple<Integer,Integer,Integer>[]) new Triple[v.length];
+        int length = 1; // always points empty slot in tail
+        tail[0] = v[0];
+        solucion.add(v[0].getValue2());
+
+        for (int i = 1; i < v.length; i++) {
+
+            if (v[i].getValue1() > tail[length - 1].getValue1()) {
+                // v[i] extends the largest subsequence
+                tail[length++] = v[i];
+                solucion.add(v[i].getValue2());
+            }
+            else {
+                // v[i] will extend a subsequence and
+                // discard older subsequence
+
+                // find the largest value just smaller than
+                // v[i] in tail
+
+                // to find that value do binary search for
+                // the v[i] in the range from begin to 0 +
+                // length
+                int idx = Arrays.binarySearch(
+                        tail, 0, length - 1, v[i]);
+
+                // binarySearch in java returns negative
+                // value if searched element is not found in
+                // array
+
+                // this negative value stores the
+                // appropriate place where the element is
+                // supposed to be stored
+                if (idx < 0)
+                    idx = -1 * idx - 1;
+
+                // replacing the existing subsequence with
+                // new end value
+                tail[idx] = v[i];
+                solucion.set(idx, v[i].getValue2());
+            }
+        }
+        return new SimpleEntry<Integer, List<Integer>>(length, solucion);
+    }
+
     /**
      * This code is contributed by Rajat Mishra. Adaptado para la solución
      * particular por la comisión López-Migliaro
@@ -98,7 +151,7 @@ public class Main{
      * @return Una tupla cuya primer componente son la cantidad máxima de expansiones y la segunda
      * componente es la lista de expansiones
      */
-    static Entry<Integer, List<Integer>> lis(Triple<Integer,Integer,Integer>[] arr, int n) {
+    static Entry<Integer, List<Integer>> lis2(Triple<Integer,Integer,Integer>[] arr, int n) {
         int lis[] = new int[n];
         List<Integer>[] soluciones = (ArrayList<Integer>[]) new ArrayList[n];
 
@@ -140,7 +193,7 @@ public class Main{
         return new SimpleEntry<Integer, List<Integer>>(max, soluciones[indiceSolucion]);
     }
 }
-class Triple<L,M,R>{
+class Triple<L,M,R> implements Comparable{
     protected L left;
     protected M middle;
     protected R right;
@@ -161,5 +214,10 @@ class Triple<L,M,R>{
 
     public R getValue2(){
         return right;
+    }
+    @Override
+    public int compareTo(Object o) {
+        Triple<L,M,R> t = (Triple<L,M,R>) o;
+        return ((int) this.middle - (int) t.getValue1());
     }
 }
