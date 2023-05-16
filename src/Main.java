@@ -26,12 +26,12 @@ public class Main{
         for(int i=0; i<n; i++){
             int newW = s.nextInt();
             int newL = s.nextInt();
-            if(newW > W && newL > L) {
-                P[j++] = new Triple<Integer, Integer, Integer>(newW, newL, i + 1);
+            if(W < newW && L < newL) {
+                P[j++] = new Triple<Integer,Integer,Integer>(newW, newL, i + 1);
             }
         }
 
-        Entry<Integer, List<Integer>> solucion = expandir(P, j);
+        Entry<Integer, List<Integer>> solucion = expandir(P, j-1);
 
         System.out.println(solucion.getKey());
         for(Integer i : solucion.getValue()){
@@ -42,8 +42,8 @@ public class Main{
     protected static Entry<Integer, List<Integer>> expandir(Triple<Integer,Integer,Integer>[] P, int cantElementos){
 
         if (cantElementos > 0){
-            Triple<Integer,Integer,Integer>[] pOrdenado = ordenar(P);
-            return lis(pOrdenado, pOrdenado.length);
+            Triple<Integer,Integer,Integer>[] pOrdenado = ordenar(P, cantElementos);
+            return lis(pOrdenado, cantElementos+1);
         }else{
             return new SimpleEntry<Integer, List<Integer>>(0, new ArrayList<Integer>());
         }
@@ -51,7 +51,7 @@ public class Main{
 
     }
 
-    protected static Triple<Integer,Integer,Integer>[] ordenar(Triple<Integer,Integer,Integer>[] P){
+    protected static Triple<Integer,Integer,Integer>[] ordenar(Triple<Integer,Integer,Integer>[] P, int cantElementos){
         Arrays.sort(P, new Comparator<Triple<Integer,Integer,Integer>>(){
 
             @Override
@@ -73,7 +73,7 @@ public class Main{
             }
         };
 
-        while (i < P.length){
+        while (i <= cantElementos){
             if(P[inicio].getValue0() != P[i].getValue0()){
                 Arrays.sort(P, inicio, i, comparador_l);
                 inicio = i;
@@ -81,8 +81,8 @@ public class Main{
             i++;
         }
 
-        if(P[inicio].getValue0() == P[P.length-1].getValue0()){
-            Arrays.sort(P, inicio, P.length, comparador_l);
+        if(P[inicio].getValue0() == P[cantElementos].getValue0()){
+            Arrays.sort(P, inicio, cantElementos+1, comparador_l);
         }
 
         // P ahora está ordenado de manera ascendente con respecto a w y
@@ -107,10 +107,10 @@ public class Main{
         // Initialize LIS values for all indexes
         for (int i = 0; i < n; i++) {
             soluciones[i] = new ArrayList<Integer>();
-            soluciones[i].add(arr[i].getValue2());
             lis[i] = 1;
         }
 
+        soluciones[0].add(arr[0].getValue2());
         // Compute optimized LIS values in
         // bottom up manner
         for (int i = 1; i < n; i++){
@@ -120,6 +120,7 @@ public class Main{
                     soluciones[i].add(arr[j].getValue2());
                 }
             }
+            soluciones[i].add(arr[i].getValue2());
         }
 
         // Pick maximum of all LIS values
