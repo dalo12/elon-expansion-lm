@@ -96,6 +96,10 @@ public class Main{
             i++;
         }
 
+        if(P[inicio].getValue0() == P[P.length-1].getValue0()){
+            Arrays.sort(P, inicio, P.length-1, comparador_l);
+        }
+
         // P ahora está ordenado con respecto a w y los que tienen igual w 
         // están ordenados de manera ascendente con respecto a l
 
