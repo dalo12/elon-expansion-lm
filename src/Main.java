@@ -83,7 +83,7 @@ public class Main{
 
             @Override
             public int compare(Triple<Integer,Integer,Integer> arg0, Triple<Integer,Integer,Integer> arg1){
-                return arg0.getValue1() - arg1.getValue1();
+                return arg1.getValue1() - arg0.getValue1();
             }
         };
 
@@ -100,8 +100,8 @@ public class Main{
             Arrays.sort(P, inicio, P.length-1, comparador_l);
         }
 
-        // P ahora está ordenado con respecto a w y los que tienen igual w 
-        // están ordenados de manera ascendente con respecto a l
+        // P ahora está ordenado de manera descendente con respecto a w y 
+        // los que tienen igual w están ordenados de manera descendente con respecto a l
 
         return P;
     }
